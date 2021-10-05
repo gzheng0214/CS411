@@ -1,1 +1,4 @@
-Ideas
+Submission:
+1. We want to find out what tropical fruits and vegetables can be grown at home. We can use local climate data and climate data about the natural habitats of tropical fruits and vegetables to find out which ones people can grow at home and when to grow them.
+
+2. We want to recommend songs/playlists according to the seasons/holidays. We can base the songs/playlist on the weather or holiday seasons. For example, when it’s raining, give the user songs/playlists related to the rain.
