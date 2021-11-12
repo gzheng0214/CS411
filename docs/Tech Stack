@@ -1,0 +1,6 @@
+Front End:
+For the frontend, we had originally decided to use Django’s template engine to render some web pages. However, the frontend team decided to pursue the frontend with a javascript framework because it would be easier to implement the front-end logic, as functionalities in the frontend are implemented with javascript. We decided to use React as the javascript framework because it has page routing and state management, which makes it easy to create a single-page 
+application. The frontend is also decoupled from the backend. 
+
+Back End: 
+For the backend we had originally chosen to use Django due to the familiarity most of our backend team had with Python. However, due to the complexity of Django starter files, which give you a large toolset that our team was not familiar with, as well as the frontend team’s unfamiliarity with Django connections, we decided to use Flask. Flask proved to be far simpler than Django. 
