@@ -33,7 +33,7 @@ def recipes():
         'x-rapidapi-key': "1fb806462bmsh644af73596e24bfp18ef67jsn9c7b02e90738"
     }
 
-    response = requests.get(API_URL, params=headers)
+    response = requests.get(API_URL, headers=headers)
     return response.json()
 
     # response = requests.request("GET", url, headers=headers, params=querystring)
