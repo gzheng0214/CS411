@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import requests
 import os
 import pathlib
@@ -7,8 +7,10 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = "Remember2EatFruits:)"
 GOOGLE_CLIENT_ID = "257365493228-jd74c6qimgo4pocp9h7cko2s222pcg9r.apps.googleusercontent.com"
 
@@ -60,13 +62,10 @@ def recipes():
 def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
-    return redirect(authorization_url)
+    return jsonify(authorization_url)
 @app.route("/callback")
 def callback():
     flow.fetch_token(authorization_response=request.url)
-
-    if not session["state"] == request.args["state"]:
-        abort(500)  # State does not match!
 
     credentials = flow.credentials
     request_session = requests.session()
@@ -81,7 +80,7 @@ def callback():
 
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
-    return redirect("/loggedin")
+    return id_info
 
 @app.route("/loggedin")
 def loggedin():

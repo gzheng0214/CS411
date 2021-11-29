@@ -1,8 +1,12 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import Card from "../components/card";
 import { ImSpinner8 } from "react-icons/im";
+import { Context } from "../context";
+import { useRouter } from "next/router";
+import { GoogleLogout } from "react-google-login";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -10,6 +14,15 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const searchbar = useRef(null);
+  const { state, dispatch } = useContext(Context);
+  const { user } = state;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -48,7 +61,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    searchbar.current.focus();
+    if (user) {
+      searchbar.current.focus();
+    }
   }, []);
 
   useEffect(() => {
@@ -56,34 +71,66 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [text]);
 
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <input
-        type="text"
-        value={text}
-        onChange={handleChange}
-        className={styles.searchbar}
-        ref={searchbar}
-        placeholder="Enter plant name..."
-      />
-      <div className={styles.content}>
-        {isLoading ? (
-          <ImSpinner8 className={styles.spinner} />
-        ) : (
-          data &&
-          !error &&
-          data.map((plant, index) => {
-            return (
-              <Card key={index} name={plant.tfvname} image={plant.imageurl} />
-            );
-          })
-        )}
-        {error && <h2 className={styles.error}>{error}</h2>}
+  const logout = () => {
+    dispatch({
+      type: "LOGOUT",
+    });
+  };
+  if (user) {
+    return (
+      <div className={styles.container}>
+        <Head>
+          <title>Welcome, {user.profileObj.givenName}</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <input
+          type="text"
+          value={text}
+          onChange={handleChange}
+          className={styles.searchbar}
+          ref={searchbar}
+          placeholder="Enter plant name..."
+        />
+        <GoogleLogout
+          clientId="867085794944-ejrn5svll7cilh29dv48obs92pkldm8k.apps.googleusercontent.com"
+          buttonText="Logout"
+          onLogoutSuccess={logout}
+          render={(renderProps) => (
+            <button
+              className={styles.googleButton}
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            >
+              <FcGoogle className={styles.icon} />
+              Sign out
+            </button>
+          )}
+        ></GoogleLogout>
+        <div className={styles.content}>
+          {isLoading ? (
+            <ImSpinner8 className={styles.spinner} />
+          ) : (
+            data &&
+            !error &&
+            data.map((plant, index) => {
+              return (
+                <Card key={index} name={plant.tfvname} image={plant.imageurl} />
+              );
+            })
+          )}
+          {error && <h2 className={styles.error}>{error}</h2>}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <>
+        {" "}
+        <Head>
+          <title>Welcome</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+      </>
+    );
+  }
 }

@@ -58,3 +58,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+.googleButton {
+  font-family: inherit;
+  height: 4.5rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  color: grey;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
