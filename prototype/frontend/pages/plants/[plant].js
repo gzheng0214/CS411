@@ -7,12 +7,14 @@ import { ImSpinner8 } from "react-icons/im";
 import Card from "../../components/card";
 import { Context } from "../../context";
 import { loadImage } from "../../utility/functions";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const Plant = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [recipes, setRecipes] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(null);
   const router = useRouter();
   const { plant } = router.query;
 
@@ -42,6 +44,26 @@ const Plant = () => {
         throw new Error(fruits.error);
       }
       setData(fruits.results[0]);
+      const tfvname = fruits.results[0].tfvname;
+      const imageurl = fruits.results[0].imageurl;
+      const email = user.profileObj.email;
+      const response1 = await fetch("/api/getfavorite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          tfvname,
+          imageurl,
+        }),
+      });
+      const result1 = await response1.json();
+      if (result1.count == 0) {
+        setIsFavorite(false);
+      } else {
+        setIsFavorite(true);
+      }
       const response2 = await fetch("/api/recipes", {
         method: "POST",
         headers: {
@@ -65,6 +87,35 @@ const Plant = () => {
       setError(error.message);
     }
   }, [plant]);
+
+  const handleFavorite = async () => {
+    const tfvname = data.tfvname;
+    const imageurl = data.imageurl;
+    const email = user.profileObj.email;
+    try {
+      const response = await fetch("/api/favorite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          tfvname,
+          imageurl,
+        }),
+      });
+      const result = await response.json();
+      console.log(result);
+      if (result.status === "deleted") {
+        setIsFavorite(false);
+      } else if (result.status === "inserted") {
+        setIsFavorite(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -79,6 +130,14 @@ const Plant = () => {
           data &&
           !error && (
             <div className={styles.content}>
+              {isFavorite ? (
+                <AiFillHeart className={styles.icon} onClick={handleFavorite} />
+              ) : (
+                <AiOutlineHeart
+                  className={styles.icon}
+                  onClick={handleFavorite}
+                />
+              )}
               <img src={data.imageurl} className={styles.img} />
               <div>
                 <span>tfvname:&nbsp;</span>

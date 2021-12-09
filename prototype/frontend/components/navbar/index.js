@@ -26,7 +26,9 @@ const Navbar = () => {
           <a className={router.pathname == "/" ? styles.active : ""}>Home</a>
         </Link>
         <Link href="/favorites">
-          <a>Favorites</a>
+          <a className={router.pathname == "/favorites" ? styles.active : ""}>
+            Favorites
+          </a>
         </Link>
         <GoogleLogout
           clientId="867085794944-ejrn5svll7cilh29dv48obs92pkldm8k.apps.googleusercontent.com"
