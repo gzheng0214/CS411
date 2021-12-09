@@ -1,12 +1,9 @@
 from flask import Flask, request
 import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
-
-'''
- GET ALL PLANTS or SEARCH FOR ALL PLANTS THAT MATCH A TEXT
-'''
-
+CORS(app)
 
 @app.route("/plants", methods=['POST', 'GET'])
 def plants():
@@ -21,8 +18,17 @@ def plants():
         response = requests.get(API_URL)
         return response.json()
 
+@app.route("/plant", methods=['POST'])
+def plant():
+    if request.method == 'POST':
+        body = request.get_json()
+        plant = body["plant"]
+        API_URL = "https://tropicalfruitandveg.com/api/tfvjsonapi.php?tfvitem=" + plant
+        response = requests.get(API_URL)
+        return response.json()
 
-@app.route("/recipes", methods=['GET'])
+
+@app.route("/recipes", methods=['POST'])
 def recipes():
     body = request.get_json()
     recipe = body["recipe"]
@@ -37,6 +43,7 @@ def recipes():
     return response.json()
 
     # response = requests.request("GET", url, headers=headers, params=querystring)
+
 
 
 if __name__ == "__main__":

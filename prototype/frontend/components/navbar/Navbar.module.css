@@ -1,0 +1,49 @@
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 10rem;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2rem;
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40rem;
+}
+
+.googleButton {
+  font-family: inherit;
+  height: 4.5rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  color: grey;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.active {
+  color: green;
+  border-bottom: 1px solid green;
+}
+
+@media (max-width: 37.5em) {
+  .navbar {
+    padding: 2rem min(5%, 3rem);
+    justify-content: center;
+  }
+}
