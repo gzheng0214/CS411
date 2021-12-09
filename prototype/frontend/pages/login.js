@@ -12,7 +12,7 @@ const Login = () => {
   const { user } = state;
 
   useEffect(() => {
-    if (user) router.push("/");
+    if (user) router.push(window.sessionStorage.getItem("prevpage") || "/");
   }, [user]);
 
   const responseGoogle = (response) => {

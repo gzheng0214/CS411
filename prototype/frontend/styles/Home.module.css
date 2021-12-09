@@ -13,7 +13,7 @@
   box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 35rem;
-  margin: 10rem 0 5rem 0;
+  margin: 10rem 0 2rem 0;
   background-color: #d9ffe5;
   border-radius: 0.5rem;
 }
@@ -76,4 +76,23 @@
 .icon {
   font-size: 2rem;
   margin-right: 1rem;
+}
+
+.viewBtn {
+  font-family: inherit;
+  height: 4.5rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+  transition: background-color 0.3s;
+}
+
+.viewBtn:active {
+  background-color: grey;
 }
