@@ -1,9 +1,12 @@
 from flask import Flask, request
 import requests
-from flask_cors import CORS
+from pymongo import MongoClient
 
 app = Flask(__name__)
-CORS(app)
+client = MongoClient()
+client = MongoClient('mongodb://localhost:27017/')
+db = client.plants
+collection = db.favorites
 
 @app.route("/plants", methods=['POST', 'GET'])
 def plants():
@@ -42,9 +45,46 @@ def recipes():
     response = requests.get(API_URL, headers=headers)
     return response.json()
 
-    # response = requests.request("GET", url, headers=headers, params=querystring)
+@app.route("/favorite", methods=['POST'])
+def favorite():
+    body = request.get_json();
+    email = body["email"]
+    tfvname = body["tfvname"]
+    imageurl = body["imageurl"]
+    result = collection.find_one({"email": email, "tfvname": tfvname, "imageurl": imageurl})
+    if (result == None):
+        result = collection.insert_one({"email": email, "tfvname": tfvname, "imageurl": imageurl})
+        return {"status": "inserted"}
+    else:
+        result = collection.delete_one({"email": email, "tfvname": tfvname, "imageurl": imageurl})
+        return {"status": "deleted"}
 
+@app.route("/getfavorite", methods=['POST'])
+def getfavorite():
+    body = request.get_json();
+    email = body["email"]
+    tfvname = body["tfvname"]
+    imageurl = body["imageurl"]
+    result = collection.find_one({"email": email, "tfvname": tfvname, "imageurl": imageurl})
+    print(result)
+    if (result == None):
+        return {"count" : 0}
+    else:
+        return {"count" : 1}
 
+@app.route("/getallfavorites", methods=['POST'])
+def getallfavorite():
+    body = request.get_json()
+    email = body["email"]
+    result = collection.find({"email" : email})
+    docs = []
+    for doc in result:
+        doc['_id'] = str(doc['_id'])
+        docs.append(doc)
+    if (len(docs) == 0):
+        return {"count" : 0, "result": docs}
+    else:
+        return {"count" : len(docs), "result": docs}
 
 if __name__ == "__main__":
     app.run(debug=True)
