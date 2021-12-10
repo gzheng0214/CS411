@@ -3,4 +3,4 @@ For the frontend, we had originally decided to use Django’s template engine to
 application. The frontend is also decoupled from the backend. 
 
 Back End: 
-For the backend we had originally chosen to use Django due to the familiarity most of our backend team had with Python. However, due to the complexity of Django starter files, which give you a large toolset that our team was not familiar with, as well as the frontend team’s unfamiliarity with Django connections, we decided to use Flask. Flask proved to be far simpler than Django. 
+For the backend we had originally chosen to use Django due to the familiarity most of our backend team had with Python. However, due to the complexity of Django starter files, which give you a large toolset that our team was not familiar with, as well as the front end team’s unfamiliarity with Django connections, we decided to use Flask. Flask proved to be far simpler than Django. We also decided to use mongoDB as our database instead of sqlite as originially planned due to the front end teams's familiarity with mongoDB.
